@@ -1,21 +1,22 @@
 //database
 const mysql = require('mysql');
 const mysqlConfig = require('./config.js').config;
-// console.log('config', mysqlConfig)
 
 const connection = mysql.createConnection(mysqlConfig);
 connection.connect()
 
 const getAllFavorites = function(callback) {
-  //get favorites from the database
+  connection.query('SELECT * FROM ratings', (err, data) => {
+    if(err){
+      console.log('err in getFaves db')
+    } else{
+      callback(data);
+    }
+  })
 };
-const saveFavorite = function(data, callback) {
-  console.log('db', data)
-  let url = "https://image.tmdb.org/t/p/w500" + data.poster_path;
-  let year = (data.release_date) ? data.release_date.slice(0, 4) : 'none'
-  connection.query('INSERT INTO ratings (imageUrl, title, year, rating) VALUES (?,?,?,?)', 
-                  [url, data.title, year, data.vote_average] )
-  // cb('hi');
+const saveFavorite = function(data) {
+  connection.query('INSERT INTO ratings (poster_path, title, release_date, vote_average) VALUES (?,?,?,?)', 
+                  [data.poster_path, data.title, data.release_date, data.vote_average] )
 };
 const deleteFavorites = function(callback) {
   //get favorites from the database

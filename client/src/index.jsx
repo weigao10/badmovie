@@ -16,9 +16,8 @@ class App extends React.Component {
       favorites: [{deway: "favorites"}],
       showFaves: false
   	}
-
     this.getMovies = this.getMovies.bind(this)
-    this.saveMovie = this.saveMovie.bind(this)
+    this.displayFaves = this.displayFaves.bind(this)
     this.deleteMovie = this.deleteMovie.bind(this)
     this.swapFavorites = this.swapFavorites.bind(this)
   }
@@ -35,8 +34,17 @@ class App extends React.Component {
     })
   }
 
-  saveMovie() {
-    //same as above but do something diff
+  displayFaves() {
+    axios.get('/faves')
+    .then((response) => {
+      this.setState({
+        favorites: response.data
+      })
+    })
+    .catch((err) => {
+      console.log('err in client get req /faves')
+    })
+    
   }
 
   deleteMovie() {
@@ -56,8 +64,14 @@ class App extends React.Component {
       <header className="navbar"><h1>Bad Movies</h1></header> 
       
       <div className="main">
-        <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves} getMovies={this.getMovies}/>
-        <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves} getMovies={this.getMovies}/>
+        <Search swapFavorites={this.swapFavorites} 
+                showFaves={this.state.showFaves} 
+                getMovies={this.getMovies}
+                displayFaves={this.displayFaves}/>
+        <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} 
+                        showFaves={this.state.showFaves} 
+                        getMovies={this.getMovies} 
+                        displayFaves={this.displayFaves}/>
       </div>
     </div>)
   }

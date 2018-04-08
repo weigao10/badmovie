@@ -25,6 +25,12 @@ app.post('/search', function (req, res) {
     })
 })
 
+app.get('/faves', (req, res) => {
+    db.getAllFavorites((response) => {
+        res.end(JSON.stringify(response))
+    })
+})
+
 app.get('/genres', function (req, res) {
     let genreUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=' + config.API_KEY
     axios.get(genreUrl)
@@ -37,10 +43,7 @@ app.get('/genres', function (req, res) {
 })
 
 app.post('/save', function (req, res) {
-    // console.log(req.body.movie)
-    db.saveFavorite(req.body.movie, () => {
-        console.log('did it')
-    })
+    db.saveFavorite(req.body.movie)
 })
 
 app.post('/delete', function (req, res) {

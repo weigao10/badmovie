@@ -4,25 +4,27 @@ import axios from 'axios';
 class Movies extends React.Component {
   constructor(props) {
     super(props)
-
-    this.displayMovies = this.displayMovies.bind(this)
-    this.displayFaves = this.displayFaves.bind(this)
-
     this.saveToFaves = this.saveToFaves.bind(this)
+    this.deleteFromFaves = this.deleteFromFaves.bind(this)    
   }
 
   componentDidMount(){
     this.props.getMovies()
   }
 
-//    Make an onclick for each list item. If the movies shown is the search results, 
-//.   add it to the db (do it in the main app, and passs down the function). 
+  saveToFaves(movie){
+    axios.post('/save', {
+      movie: movie
+    })
+  }
 
-//.   If youre currently showing the fave list, delete the movie instead
-//.   you can tell which list it is based on whether the prop "showFaves" is false (search results) or true (fave list)
+  deleteFromFaves(movie){
+    axios.post('/delete', {
+      movie: movie
+    })
+  }
 
-
-  displayMovies() {
+  render() {
     return (
       <ul className="movies">
       {
@@ -49,25 +51,6 @@ class Movies extends React.Component {
         })
       }
     </ul>)
-  }
-
-  displayFaves() {
-    return <div>WILL SHOW FAVES</div> 
-  }
-
-  saveToFaves(movie){
-    console.log('in', movie)
-    axios.post('/save', {
-      movie: movie
-    })
-  }
-
-  render() {
-    if(this.props.showFaves){
-      return this.displayFaves()
-    } else {
-      return this.displayMovies()
-    }
   }
 }
 

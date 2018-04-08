@@ -4,10 +4,10 @@ USE badmovies;
 
 CREATE TABLE IF NOT EXISTS ratings (
   id INT NOT NULL AUTO_INCREMENT,
-  imageUrl VARCHAR(100),
+  poster_path VARCHAR(100),
   title VARCHAR(50) NOT NULL,
-  year INT,
-  rating INT,
+  release_date VARCHAR(50),
+  vote_average INT,
   PRIMARY KEY(id)
 );
 

@@ -30,7 +30,10 @@ class Search extends React.Component {
   render() {
     return (
       <div className="search">
-        <button onClick={() => { this.props.swapFavorites() }}>{this.props.showFaves ? "Show Results" : "Show Favorites"}</button>
+        <button onClick={() => { 
+          this.props.swapFavorites();
+          this.props.displayFaves();
+        }}>{this.props.showFaves ? "Show Results" : "Show Favorites"}</button>
         <br /><br />
         <select value={this.state.selectedGenre} onChange={this.onChange}>
           {
@@ -50,7 +53,6 @@ class Search extends React.Component {
   }
 
   onChange(e){
-    // console.log('in on change e', e.target.value)
     this.setState({
       selectedGenre: e.target.value
     })
