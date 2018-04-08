@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS ratings (
   title VARCHAR(50) NOT NULL,
   release_date VARCHAR(50),
   vote_average INT,
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+  UNIQUE KEY(poster_path)
 );
 

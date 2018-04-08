@@ -47,7 +47,16 @@ class App extends React.Component {
     
   }
 
-  deleteMovie() {
+  deleteMovie(movie) {
+    axios.post('/delete', {
+      movie: movie
+    })
+    .then((response) => {
+      this.displayFaves();
+    })
+    .catch((err) => {
+      console.log('err in client get req /delete')
+    })
     //same as above but do something diff
   }
 
@@ -71,7 +80,8 @@ class App extends React.Component {
         <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} 
                         showFaves={this.state.showFaves} 
                         getMovies={this.getMovies} 
-                        displayFaves={this.displayFaves}/>
+                        displayFaves={this.displayFaves}
+                        deleteMovie={this.deleteMovie}/>
       </div>
     </div>)
   }

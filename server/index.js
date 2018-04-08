@@ -47,7 +47,8 @@ app.post('/save', function (req, res) {
 })
 
 app.post('/delete', function (req, res) {
-
+    db.deleteFavorite(req.body.movie)
+    res.end()
 })
 app.listen(3000, function () {
     console.log('listening on port 3000!');
