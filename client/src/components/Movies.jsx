@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class Movies extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class Movies extends React.Component {
     this.displayMovies = this.displayMovies.bind(this)
     this.displayFaves = this.displayFaves.bind(this)
 
-    // this.savetoFavs = this.savetoFavs.bind(this);
+    this.saveToFaves = this.saveToFaves.bind(this)
   }
 
   componentDidMount(){
@@ -21,23 +22,15 @@ class Movies extends React.Component {
 //.   you can tell which list it is based on whether the prop "showFaves" is false (search results) or true (fave list)
 
 
-//
-  render() {
-    if(this.props.showFaves){
-      return this.displayFaves()
-    } else {
-      return this.displayMovies()
-    }
-  }
-
   displayMovies() {
     return (
       <ul className="movies">
       {
         this.props.movies.map((movie) => { 
           let date = (movie.release_date) ? movie.release_date.slice(0, 4) : 'none'
-          console.log('date', date)
-          return <li className="movie_item"><div>
+          return <li className="movie_item" onClick={() =>{
+            this.saveToFaves(movie);
+          }}><div>
             <img src={"https://image.tmdb.org/t/p/w500" + movie.poster_path} width="209"/>
             <div className="movie_description">
               <h2>{movie.title}</h2>
@@ -62,7 +55,20 @@ class Movies extends React.Component {
     return <div>WILL SHOW FAVES</div> 
   }
 
+  saveToFaves(movie){
+    console.log('in', movie)
+    axios.post('/save', {
+      movie: movie
+    })
+  }
 
+  render() {
+    if(this.props.showFaves){
+      return this.displayFaves()
+    } else {
+      return this.displayMovies()
+    }
+  }
 }
 
 export default Movies

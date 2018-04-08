@@ -4,6 +4,7 @@ var axios = require('axios')
 var bodyParser = require('body-parser');
 var request = require('request')
 var config = require(__dirname + '/config.js')
+var db = require(__dirname + '/database.js')
 var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -14,7 +15,7 @@ app.post('/search', function (req, res) {
     let moviesUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' 
                     + config.API_KEY 
                     + '&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&with_genres='
-                    + req.body.genre
+                    + req.body.genre;
     axios.get(moviesUrl)
     .then((response) => {
         res.end(JSON.stringify(response.data.results))
@@ -36,7 +37,10 @@ app.get('/genres', function (req, res) {
 })
 
 app.post('/save', function (req, res) {
-
+    // console.log(req.body.movie)
+    db.saveFavorite(req.body.movie, () => {
+        console.log('did it')
+    })
 })
 
 app.post('/delete', function (req, res) {
