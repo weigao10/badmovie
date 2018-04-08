@@ -1,39 +1,47 @@
+//server
 var express = require('express');
+var axios = require('axios')
 var bodyParser = require('body-parser');
 var request = require('request')
+var config = require(__dirname + '/config.js')
 var app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
-// app.use(bodyParser.json())
+app.use(bodyParser.json())
 
 // Due to express, when you load the page, it doesnt make a get request to '/', it simply serves up the dist folder
-app.get('/search', function(req, res) {
-    //get the search genre     
-
-    //https://www.themoviedb.org/account/signup
-
-    // use this endpoint to search for movies by genres, you will need an API key
-
-    //https://developers.themoviedb.org/3/discover/movie-discover
-
-    //and sort them by horrible votes using the search parameters in the API
+app.post('/search', function (req, res) {
+    let moviesUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' 
+                    + config.API_KEY 
+                    + '&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&with_genres='
+                    + req.body.genre
+    axios.get(moviesUrl)
+    .then((response) => {
+        res.end(JSON.stringify(response.data.results))
+    })
+    .catch((err) => {
+        console.log('err in API get req /search', err)
+    })
 })
 
-app.get('/genres', function(req, res) {
-    //make an axios request to get the list of official genres
-
-    // from this endpoint https://developers.themoviedb.org/3/genres/get-movie-list which needs your api key
-
-    //send back
+app.get('/genres', function (req, res) {
+    let genreUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=' + config.API_KEY
+    axios.get(genreUrl)
+        .then((response) => {
+            res.end(JSON.stringify(response.data.genres))
+        })
+        .catch((err) => {
+            console.log('err in API get req /genres', err)
+        })
 })
 
-app.post('/save', function(req, res) {
+app.post('/save', function (req, res) {
 
 })
 
-app.post('/delete', function(req, res) {
+app.post('/delete', function (req, res) {
 
 })
-app.listen(3000, function() {
-  console.log('listening on port 3000!');
+app.listen(3000, function () {
+    console.log('listening on port 3000!');
 });

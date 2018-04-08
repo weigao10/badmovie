@@ -1,6 +1,6 @@
 module.exports = {
   host: 'localhost',
-  user: 'ur sql username which is probably root', 
-  password: 'ur sql password which is probably nothing', 
-  database: 'badmovies'
+  user: 'root',
+  database: 'badmovies',
+  API_KEY: '98525d634925423e82e6409ff94d50b9'
 };
